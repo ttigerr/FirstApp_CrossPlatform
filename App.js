@@ -1,15 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TextInput, TouchableOpacity} from 'react-native';
-//import Constants  from 'expo-constants';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ItemList } from './components/Item';
 
 export default function App() {
 
-  // Initialise constants
+  // Initialise states
   const [data, setData] = useState([])
   const [ validInput, setValidInput ] = useState(false)
   const [userInput, setUserInput] = useState()
+  const [appData, setAppData] = useState(true)
 
   const onTextChange = (value) => {
     setUserInput(value)
@@ -28,8 +29,36 @@ export default function App() {
     const item = { id: id, name: userInput }
     setData([...data, item ])
     setUserInput(null)
-    
+    setValidInput(false)
   }
+  
+  const storeData = async () => {
+    const stringified = JSON.stringify( data )
+    try {
+      await AsyncStorage.setItem( "listData" , stringified ) 
+    } catch (error) {
+      console.log( error )
+    }
+  }
+
+  const getdata = async () => {
+    try {
+      const stringified = await AsyncStorage.getItem("listData")
+      setData( (stringified !== null) ? JSON.parse(stringified) : [] )
+    } catch (error) {
+      console.log( error )
+    }
+  }
+
+  useEffect (() => {
+    if(appData) {
+      getdata()
+      setAppData(false)
+    }
+    else {
+      storeData()
+    }
+  }, [data])
 
   const deleteItem = (id) => {
     let items = [...data]
