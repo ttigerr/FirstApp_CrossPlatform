@@ -26,7 +26,7 @@ export default function App() {
 
   const onSubmit = (event) => {
     const id = new Date().getTime().toString()
-    const item = { id: id, name: userInput }
+    const item = { id: id, name: userInput, status: false }
     setData([...data, item ])
     setUserInput(null)
     setValidInput(false)
@@ -60,6 +60,16 @@ export default function App() {
     }
   }, [data])
 
+  const updateItemStatus = (id) => {
+    let items = [...data]
+    items.forEach( (item) => {
+      if( item.id === id ) {
+        item.status = true
+      }
+    })
+    setData( items )
+  }
+
   const deleteItem = (id) => {
     let items = [...data]
     let newData = items.filter((item) => {
@@ -74,6 +84,8 @@ export default function App() {
   (
     <ItemList text = {item.name} 
       delete ={deleteItem} id = {item.id}
+      status={item.status}
+      done={updateItemStatus}
     />
   )
 
@@ -147,6 +159,6 @@ const styles = StyleSheet.create({
   textButton: {
     color: 'white',
     textAlign: 'center',
-  }
+  },
 
 });
