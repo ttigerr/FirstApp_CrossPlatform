@@ -1,9 +1,10 @@
 import React from 'react'
-import { View, Text, StyleSheet, Button, Image, TouchableOpacity, CheckBox } from 'react-native'
+import { View, Text, StyleSheet, Button, Image, TouchableOpacity, TextInput } from 'react-native'
 
 
  
 export const ItemList = (props) => {
+    const items = props.items;
 
     return (
       <View style={(props.status) ? styles.done : styles.container}>
@@ -13,7 +14,7 @@ export const ItemList = (props) => {
             <Image source={ require('../assets/circle_check.png') } style={styles.icon} />
 
         </TouchableOpacity>
-        <Text style= {(props.status) ? styles.textDone : styles.title}>{props.text}</Text>
+        <TextInput style= {(props.status) ? styles.textDone : styles.title}>{props.text}</TextInput>
         {/* <Button title="Delete" onPress={() => props.delete(props.id)}/> */}
         <TouchableOpacity 
             onPress={ () => props.delete(props.id) } >

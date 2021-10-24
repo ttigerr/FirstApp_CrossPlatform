@@ -12,6 +12,7 @@ export default function App() {
   const [userInput, setUserInput] = useState()
   const [appData, setAppData] = useState(true)
 
+  // check and define the length of the input 
   const onTextChange = (value) => {
     setUserInput(value)
     if(value.length >= 4)
@@ -24,6 +25,7 @@ export default function App() {
     }
   }
 
+  // When user triggers a button then store a new data
   const onSubmit = (event) => {
     const id = new Date().getTime().toString()
     const item = { id: id, name: userInput, status: false }
@@ -32,6 +34,7 @@ export default function App() {
     setValidInput(false)
   }
   
+  // Keep a data store in the app
   const storeData = async () => {
     const stringified = JSON.stringify( data )
     try {
@@ -60,6 +63,7 @@ export default function App() {
     }
   }, [data])
 
+  // Mark it as completed 
   const updateItemStatus = (id) => {
     let items = [...data]
     items.forEach( (item) => {
@@ -70,6 +74,7 @@ export default function App() {
     setData( items )
   }
 
+  // Delete item lists
   const deleteItem = (id) => {
     let items = [...data]
     let newData = items.filter((item) => {
